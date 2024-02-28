@@ -1,90 +1,47 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/g_0Nraip)
-# Blog Personal Nest
+# Desarrollo de un API RESTful para un blog personal utilizando NestJS
 
-Este es un proyecto de blog personal desarrollado con NestJS.
+## Introducción
 
-## Sugerencia
+El objetivo de este proyecto fue desarrollar una aplicación de blog personal utilizando el framework NestJS para el backend, conectado a una base de datos MongoDB. La aplicación debía permitir operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en los posts del blog. Para facilitar el despliegue y la configuración del entorno, se utilizó Docker, en particular Docker Compose, para orquestar el contenedor de la aplicación y el contenedor de MongoDB.
 
-¡Antes de clonar o realizar un fork de este repositorio, te animamos a que intentes crear el proyecto desde cero siguiendo el tutorial!
+## Herramientas y Tecnologías Utilizadas
 
-## Tutorial
+- **NestJS**: Utilizado para construir la lógica del servidor y manejar las solicitudes y respuestas HTTP.
+- **MongoDB**: Elegido como la base de datos para almacenar los datos de los posts debido a su flexibilidad y facilidad de uso con datos no estructurados.
+- **Docker**: Utilizado para contenerizar la aplicación y la base de datos, asegurando la consistencia entre diferentes entornos de desarrollo y producción.
+- **Docker Compose**: Facilita la configuración y gestión de contenedores múltiples que necesitan interactuar.
 
-Si deseas aprender a implementar autenticación en un blog personal con NestJS, te invitamos a seguir el tutorial en el siguiente enlace: 
+## Desarrollo
 
-- [**Tutorial:** Implementación de un Blog Personal con Nest.js](/Tutoriales/tutorial.md)
+### Configuración Inicial
 
-- [**Tutorial:** Implementación de Autenticación en un Blog Personal con Nest.js](/Tutoriales/tutorial-auth.md)
+El proyecto comenzó con la configuración del entorno de desarrollo utilizando Docker Compose para ejecutar MongoDB. Se creó un archivo `docker-compose.yml` especificando la imagen de MongoDB, las credenciales de acceso, y el volumen para la persistencia de datos.
 
-<!-- - [**Tutorial:** Implementación de Docker y Docker Compose en un Blog Personal con Nest.js](/Tutoriales/tutorial-docker.md) -->
+### Implementación del CRUD
 
-- [**Tutorial:** Implementación de MongoDB en un Blog Personal con Nest.js](/Tutoriales/tutorial-connection-database.md)
+Se implementaron los modelos y controladores necesarios en NestJS para realizar operaciones CRUD en la colección de posts. Se utilizó Mongoose como ODM para facilitar la interacción con MongoDB. Un punto clave fue la personalización del esquema para incluir un `id_post` como identificador único de cada post.
 
-- [**Tutorial:** Implementación de Peticiones Get, Post, Put, Delete](/Tutoriales/tutorial-peticiones.md)
+### Conexión a MongoDB mediante Docker
 
-<!-- - [**Tutorial:** Implementación de Comentarios en un Blog Personal con Nest.js](/Tutoriales/tutorial-comentarios.md)
+La conexión entre la aplicación NestJS y la instancia de MongoDB orquestada por Docker se configuró en el archivo `app.module.ts` de NestJS, especificando la URL de conexión y las credenciales de acceso.
 
-- [**Tutorial:** Mejora de la Validación de Datos en un Blog Personal con Nest.js](/Tutoriales/tutorial-validacion.md)
+## Problemas Encontrados y Soluciones
 
-- [**Tutorial:** Implementación de Pruebas Unitarias en un Blog Personal con Nest.js](/Tutoriales/tutorial-pruebas.md) -->
+- **Conexión a la Base de Datos Incorrecta**: Inicialmente, los datos se guardaban en la base de datos `test` por defecto de MongoDB. Este problema se resolvió especificando el nombre de la base de datos deseada (`mydatabase`) directamente en la cadena de conexión de Mongoose.
+- **Errores de Autenticación al Cambiar la Base de Datos**: Al intentar conectar a `mydatabase`, surgieron errores de autenticación. Este problema fue solucionado asegurándose de que las credenciales proporcionadas en la cadena de conexión coincidieran con las configuradas en el `docker-compose.yml`.
 
+## Observaciones Relevantes
 
+Se destacó la importancia de la correcta configuración de la cadena de conexión y las credenciales para evitar problemas de conexión y autenticación con la base de datos. También se subrayó el valor de Docker Compose para simplificar la configuración y gestión de contenedores.
 
-## Descripción
+## Conclusión
 
-Este proyecto es un blog personal desarrollado utilizando el framework NestJS, que permite a los usuarios crear, leer, actualizar y eliminar publicaciones. Utiliza una arquitectura modular y está diseñado siguiendo los principios de RESTful API.
+Este proyecto demostró cómo desarrollar una aplicación de blog personal con NestJS y MongoDB, enfatizando la configuración de un entorno de desarrollo reproducible con Docker. Los desafíos encontrados y superados en el proceso reforzaron la comprensión de la conexión entre aplicaciones NestJS y bases de datos MongoDB, así como la gestión de contenedores con Docker.
 
-## Funcionalidades
+## Pasos para ejecutar la aplicación
 
-- Crear una nueva publicación
-- Leer una publicación existente
-- Actualizar una publicación existente
-- Eliminar una publicación existente
-
-## Tecnologías utilizadas
-
-- NestJS
-- TypeScript
-- UUID
-- Docker
-- Docker Compose
-
-## Instalación
-
-- Clona este repositorio: git clone https://github.com/statick88/blogpersonalnest
-- Instala las dependencias: npm install
-
-## Uso
-
-- Inicia el servidor de desarrollo utilizando docker desktop: `docker compose up -d`
-- Realiza las peticiones HTTP utilizando tu herramienta favorita como Thunder Client.
-
-## Endpoints
-
-- GET /posts: Obtener todas las publicaciones
-- GET /posts/:id: Obtener una publicación por su ID
-- POST /posts: Crear una nueva publicación
-- PUT /posts/:id: Actualizar una publicación existente
-- DELETE /posts/:id: Eliminar una publicación existente
-
-## Autenticación
-
-Para proteger las rutas y los recursos, se ha implementado la autenticación mediante tokens JWT (JSON Web Tokens). 
-
-Debes obtener un token de acceso enviando una solicitud POST a `/auth/login` con las credenciales de usuario. Luego, incluye este token en la cabecera Authorization de tus solicitudes HTTP utilizando el esquema Bearer.
-
-## Mejoras Futuras
-
-- [✅] Implementación de autenticación y autorización.
-- [✅] Implementación de Docker y Docker Compose.
-- [✅] Implementación de MongoDB para almacenar las publicaciones.
-- [✅] Implementación de comentarios en las publicaciones.
-- [✅] Mejorar la validación de datos en las solicitudes POST y PUT.
-
-
-## Contribuyendo
-
-¡Las contribuciones son bienvenidas! Si tienes alguna sugerencia, mejora o corrección, por favor crea un pull request.
-
-## Licencia
-
-[MIT](LICENSE)
+1. Descargar el código, las dependencias con `npm install` y en la terminal ingresar `docker-compose up -d`.
+2. Se descargará los complementos necesarios para el código, la imagen en la aplicación docker desktop y se pondrá en ejecución el contenedor.
+3. Para realizar las peticiones como GET, POST, PUT, DELETE mediante la extensión de Thunder Client, se deberá de colocar en la terminal el comando: `npm start`, con eso se realizará una conexión a la base de mongo.
+4. Para corroborar que los datos se guarden correctamente dentro de la base de mongo, podemos ingresar en la interfaz gráfica de Mongo Compass y realizar conexión con nuestra base de datos, mediante las credenciales especificadas en el archivo `.yml`.
+5. Una vez dentro se verán los datos correctamente guardados.
